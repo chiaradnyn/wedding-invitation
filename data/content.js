@@ -8,10 +8,12 @@ window.WEDDING = {
   defaultLang: "en",                      // opens in English; guests switch to Indonesian with the EN | ID toggle (?lang=id also works)
   couple: { a: "Chiara", b: "Adji", monogram: "C & A" },
   date: "2026-12-19T08:00:00+07:00",      // countdown target: Akad Nikah 08:00 WIB
-  hero: { photo: "assets/images/hero" },
+  hero: { photo: "assets/images/hero.jpeg" },
+  // Bride & groom portraits on "The Wedding of" page (shown inside the oval frame)
+  profiles: { bride: "assets/images/profile-01.jpeg", groom: "assets/images/profile-02.jpeg" },
   ayat: "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ",   // Ar-Rum 30:21
 
-  story: [ { photo: "assets/images/story-01" }, { photo: "assets/images/couple-01" }, { photo: "assets/images/hero" } ],
+  story: [ { photo: "assets/images/story-01.jpeg" }, { photo: "assets/images/story-02.jpeg" }, { photo: "assets/images/story-03.jpeg" } ],
 
   events: [
     { venue: "Gedung Soos Sasono Suko", address: "Cepu, Blora, Jawa Tengah", mapUrl: "https://www.google.com/maps/search/?api=1&query=Gedung+Soos+Sasono+Suko+Cepu" },
@@ -19,7 +21,7 @@ window.WEDDING = {
   ],
   venueMap: { name: "Gedung Soos Sasono Suko Cepu", query: "Gedung Soos Sasono Suko Cepu" },
 
-  gallery: [ { src: "assets/images/couple-01" }, { src: "assets/images/hero" }, { src: "assets/images/story-01" } ],
+  gallery: [ { src: "assets/images/couple-01.jpeg" }, { src: "assets/images/couple-02.jpeg" }, { src: "assets/images/hero.jpeg" }, { src: "assets/images/story-01.jpeg" } ],
 
   gifts: {
     banks: [{ bank: "BNI", number: "0696305090", name: "Millenanda Chiara Adnyn" }],   // keep exactly as on the bank account
@@ -47,7 +49,7 @@ window.WEDDING = {
       dateLabel: "Cepu · Saturday, 19 December 2026",
       verse: { ref: "Ar-Rum · Verse 21", text: "And among His signs is that He created for you spouses from among yourselves, that you may find tranquility in them, and He placed between you love and mercy. Indeed, in that are signs for a people who reflect." },
       heroAlt: "The couple walking together through a tropical garden",
-      galleryAlts: ["The couple standing close together, dressed in batik", "The couple walking together through a tropical garden", "The couple standing side by side holding white flowers"],
+      galleryAlts: ["The couple standing close together, dressed in batik", "The couple together", "The couple walking together through a tropical garden", "The couple standing side by side holding white flowers"],
       dressCode: "",
 
       texts: {
@@ -155,7 +157,7 @@ window.WEDDING = {
       dateLabel: "Cepu · Sabtu, 19 Desember 2026",
       verse: { ref: "QS. Ar-Rum · Ayat 21", text: "Dan di antara tanda-tanda kebesaran-Nya, Dia menciptakan pasangan untukmu dari jenismu sendiri agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir." },
       heroAlt: "Sepasang mempelai berjalan bersama di taman tropis",
-      galleryAlts: ["Sepasang mempelai berdiri berdekatan dengan busana batik", "Sepasang mempelai berjalan bersama di taman tropis", "Sepasang mempelai berdiri berdampingan sambil memegang bunga putih"],
+      galleryAlts: ["Sepasang mempelai berdiri berdekatan dengan busana batik", "Sepasang mempelai bersama", "Sepasang mempelai berjalan bersama di taman tropis", "Sepasang mempelai berdiri berdampingan sambil memegang bunga putih"],
       dressCode: "",
 
       texts: {

@@ -73,7 +73,7 @@
   }
 
   /* ---------- Personalization: ?to=Dr.%20Rina ---------- */
-  const guest = (new URLSearchParams(location.search).get("to") || "").replace(/[\u0000-\u001f\u007f<>"'`\\{}]/g, "").replace(/\s+/g, " ").trim().slice(0, 60);
+  const guest = (new URLSearchParams(location.search).get("to") || "").replace(/[\u0000-\u001f\u007f<>"'`\\{}]/g, "").replace(/\s+/g, " ").trim().slice(0, 90);
 
   /* ---------- Music engine (lives outside the DOM so switching language never interrupts it) ---------- */
   const tracks = (() => {
@@ -134,12 +134,14 @@
   }
 
   function Couple() {
-    const card = p => h("div", { class: "card person tape rv" },
+    const P = W.profiles || {};
+    const card = (p, src) => h("div", { class: "card person tape rv" },
+      src ? framed("frame-oval", photo(src, p.name), "pf-frm") : null,
       h("h3", { class: "pname", text: p.name }), h("p", { class: "cap rel", text: p.rel }),
       h("p", { class: "parents" }, p.parents[0], h("br"), "& " + p.parents[1]),
       h("p", { class: "addr", text: p.address }));
     const s = section("couple", "couple", h("p", { id: "couple-t", class: "script rv", text: T.weddingOf }),
-      h("div", { class: "people" }, card(D.bride), h("p", { class: "amp rv", "aria-hidden": "true", text: "&" }), card(D.groom)));
+      h("div", { class: "people" }, card(D.bride, P.bride), h("p", { class: "amp rv", "aria-hidden": "true", text: "&" }), card(D.groom, P.groom)));
     s.append(Art.corner("l"), Art.corner("r")); return s;
   }
 
@@ -185,7 +187,7 @@
   }
 
   function Gallery() {
-    const grid = h("div", { class: "grid rv" }, W.gallery.map((p, i) => { const alt = D.galleryAlts[i] || "";
+    const grid = h("div", { class: "grid rv" + (W.gallery.length % 2 ? "" : " even") }, W.gallery.map((p, i) => { const alt = D.galleryAlts[i] || "";
       return h("button", { type: "button", "aria-label": U.openPhoto + alt, onclick: () => LB.open(i) },
         p.src ? photo(p.src, alt, p) : h("div", { class: "ph", text: alt })); }));
     const s = section("gallery", "", art("canopy", Art.px("lily-bouquet", "cb l sway") + Art.px("lily-bouquet", "cb r sway")), ...head("", "", T.galleryTitle), grid, T.galleryCaption ? h("p", { class: "quote rv", text: T.galleryCaption }) : null);
@@ -242,7 +244,7 @@
       h("p", { class: "script", text: U.rsvpScript }),
       R.deadline ? h("p", { class: "cap", text: U.respondBy + R.deadline }) : null,
       h("div", { class: "row name" }, h("label", { for: "r-name", class: "mk", text: U.nameMark }),
-        h("input", { id: "r-name", name: "name", type: "text", required: "", maxlength: "60", autocomplete: "name", value: guest }), h("span", { class: "cap", text: U.nameCap })),
+        h("input", { id: "r-name", name: "name", type: "text", required: "", maxlength: "90", autocomplete: "name", value: guest }), h("span", { class: "cap", text: U.nameCap })),
       h("div", { class: "row" }, tick("radio", "attendance", "yes", U.yes), tick("radio", "attendance", "no", U.no)),
       count,
       h("div", { class: "row note" }, h("label", { for: "r-m", class: "script sm", text: U.words }), h("textarea", { id: "r-m", name: "message", maxlength: "400" })),
@@ -365,13 +367,23 @@
   }
 
   /* ---------- Chrome: language switch, opening envelope, side panel ---------- */
+  // Envelope address: long names wrap and shrink so they always stay inside the space below the seal
+  function fitGuest() {
+    const box = $(".e-to"), n = $("#open-guest"); if (!box || !n) return;
+    const used = () => [...box.children].reduce((t, c) => t + c.offsetHeight, 0) + 2;
+    n.style.fontSize = ""; let fs = parseFloat(getComputedStyle(n).fontSize);
+    while (fs > 12 && used() > box.clientHeight) { fs -= 0.5; n.style.fontSize = fs + "px"; }
+  }
+  addEventListener("resize", fitGuest);
+  if (document.fonts) document.fonts.ready.then(fitGuest);
+
   const langSwitch = () => h("div", { class: "langsw", role: "group", "aria-label": "Language / Bahasa" },
     Object.keys(W.i18n).map(k => h("button", { type: "button", "data-l": k, text: k.toUpperCase(), onclick: () => setLang(k) })));
 
   function applyChrome() {
     document.documentElement.lang = lang; document.title = D.seoTitle;
     $("#open-wo").textContent = T.weddingOf; $("#open-invite").textContent = W.couple.a + " & " + W.couple.b;
-    $("#open-to").textContent = T.dear; $("#open-guest").textContent = guest || T.fallbackGuest;
+    $("#open-to").textContent = T.dear; $("#open-guest").textContent = guest || T.fallbackGuest; fitGuest();
     $("#open-hint").textContent = T.openHint; $("#open-date").textContent = W.date.slice(8, 10) + " · " + W.date.slice(5, 7) + " · " + W.date.slice(0, 4); $("#seal-mono").textContent = W.couple.monogram;
     $("#seal").setAttribute("aria-label", U.openInvite); $(".skip").textContent = U.skip;
     all(".langsw button").forEach(b => { const on = b.dataset.l === lang; b.setAttribute("aria-pressed", on); if (on) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
@@ -405,7 +417,7 @@
     if (bg) addEventListener("scroll", () => { if (!tk) { tk = true; requestAnimationFrame(() => { bg.style.transform = `translateY(${Math.min(scrollY, 900) * .03}px)`; tk = false; }); } }, { passive: true });
   }
   // Open the site with ?check=1 to list any artwork file that is missing from the server
-  if (/[?&]check\b/.test(location.search)) Promise.all(["banner", "butterfly", "cartouche", "dove", "elephant", "env-back", "env-front", "env-liner", "fan-batik2", "frame-flowers2", "frame-oval", "gold-flora", "gunungan", "hummer", "janur", "joglo", "key", "lace-fan", "lace-trim", "lamp", "lily-bouquet", "lily-pink", "lily-white", "locket", "lov", "paper", "parasol", "rings", "roses-bg", "rosette", "seal", "stamp-bird", "stamp-flower", "stamp-tulip", "tag", "tampah", "vinyl"].map(n => fetch("assets/art/" + n + ".webp", { method: "HEAD" }).then(r => r.ok ? null : n).catch(() => n)))
+  if (/[?&]check\b/.test(location.search)) Promise.all(["banner", "bg-twill", "butterfly", "cartouche", "dove", "elephant", "env-back", "env-front", "env-liner", "fan-batik2", "frame-flowers2", "frame-oval", "gold-flora", "gunungan", "hummer", "janur", "joglo", "key", "lace-edge", "lace-fan", "lace-trim", "lamp", "lily-bouquet", "lily-pink", "lily-white", "locket", "lov", "paper", "parasol", "rings", "roses-bg", "rosette", "seal", "stamp-bird", "stamp-flower", "stamp-tulip", "tag", "tampah", "vinyl"].map(n => fetch("assets/art/" + n + ".webp", { method: "HEAD" }).then(r => r.ok ? null : n).catch(() => n)))
     .then(m => { m = m.filter(Boolean); const b = h("div", { style: "position:fixed;z-index:999;left:0;right:0;top:0;padding:12px;font:14px sans-serif;color:#fff;background:" + (m.length ? "#A4513F" : "#56603F") },
       m.length ? "Missing in assets/art/: " + m.join(".webp, ") + ".webp" : "All artwork files found."); document.body.append(b); });
   window.WEDDING_READY = true;

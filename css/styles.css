@@ -587,3 +587,34 @@ body{font-synthesis:none}
 .e-card .e-date{font-weight:500;letter-spacing:.24em;color:var(--forest)}
 .cap,.gextra{font-weight:400}
 .chap h3,.gsub{font-weight:400}
+
+/* ===== v15: envelope name fit, couple portraits, textured "The Wedding of" ===== */
+/* Envelope: the guest name lives in a fixed box between the seal and the bottom of the envelope.
+   Long names wrap onto balanced lines and app.js shrinks the font until they fit. */
+.e-to{top:calc(64.4% + 38px);bottom:11%;left:14%;right:14%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px;overflow:hidden}
+.e-to .eyebrow{flex:none;line-height:1.2;font-size:10px}
+.e-to .script{max-width:100%;overflow-wrap:break-word;text-wrap:balance;line-height:1.08}
+
+/* "The Wedding of": cream twill with lace running down both sides */
+#couple{--lace:clamp(40px,10vw,84px);
+  background:#E9DCC2 url(../assets/art/bg-twill.webp) 0 0/320px auto repeat;
+  padding-inline:calc(var(--lace) + 4px);overflow:hidden}
+#couple::before,#couple::after{content:"";position:absolute;top:0;bottom:0;width:var(--lace);z-index:0;pointer-events:none;
+  background:url(../assets/art/lace-edge.webp) 0 0/100% auto repeat-y}
+#couple::before{left:0}
+#couple::after{right:0;transform:scaleX(-1)}
+/* soft light in the middle so the title and "&" read clearly on the fabric */
+#couple .wrap{position:relative;z-index:1}
+#couple .wrap::before{content:"";position:absolute;inset:-40px -10px;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%,rgba(251,248,240,.55),rgba(251,248,240,0) 70%)}
+#couple .script{color:var(--forest);text-shadow:0 1px 0 rgba(251,248,240,.7)}
+#couple .people .amp{text-shadow:0 1px 0 rgba(251,248,240,.7)}
+#couple .person{box-shadow:0 3px 12px rgba(70,55,30,.16)}
+#couple .corner{z-index:1}
+
+/* bride & groom portraits in the oval frame */
+.pf-frm{width:min(196px,54vw);margin:0 auto 22px}
+.pf-frm .frm-ph img{object-position:50% 28%;transform:none}
+
+/* Moments: an even number of photos stays in a neat 2-column grid */
+@media(min-width:700px){.grid.even{grid-template-columns:repeat(2,1fr);max-width:560px}}

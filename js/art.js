@@ -96,20 +96,5 @@ window.Art = (() => {
     <path d="M100 100V2A98 98 0 0 1 172 28z" fill="#fff" opacity=".07"/><circle cx="100" cy="100" r="32" fill="#56603F"/>
     <text x="100" y="97" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="12" fill="#F5EFE3">C &amp; A</text><circle cx="100" cy="108" r="2.5" fill="#F5EFE3"/></svg>`;
 
-  /* ---- v8: transparent PNG/WebP keepsake artwork (assets/art/*.webp) ---- */
-  const px = (n, c = "") => `<img class="sx ${c}" src="assets/art/${n}.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
-  const stick = (n, c = "") => { const d = document.createElement("div"); d.innerHTML = px(n, c); return d.firstElementChild; };
-  const N = {
-    corner: side => stick("lov", "corner " + side),
-    penjor: side => px("janur", "pj " + side),
-    fronds: () => "",
-    scene: () => px("joglo", "joglo-img"),
-    way: () => px("fan-batik2", "fn l sway") + px("gunungan", "gn float") + px("fan-batik2", "fn r sway"),
-    archScene: () => px("env-liner", "liner") + px("hummer", "hm fly") + px("lov", "lv sway"),
-    vine: () => `<div class="vf">${px("lily-pink", "a sway")}${px("lov", "b sway")}${px("lily-white", "c sway")}</div>`,
-    vinyl: () => px("vinyl", "vinyl-img"),
-    backdrop: () => px("lily-white", "dk d1 float") + px("lily-pink", "dk d2 float2") + px("hummer", "dk d3 fly") + px("dove", "dk d4 float2"),
-    heroDeco: () => px("janur", "pj l") + px("janur", "pj r") + px("lily-white", "dk d1 float") + px("lily-pink", "dk d2 float2") + px("hummer", "dk d3 fly") + `<div class="bt">${px("joglo", "joglo-img")}</div>`
-  };
-  return { ...{ scene, way, archScene, corner, divider, lace, vinyl, vine, penjor, fronds, backdrop, heroDeco }, ...N, stick, px, holes: {"frame-flowers2": {"l": 16.2, "t": 16.4, "w": 66.2, "h": 71.5, "ar": 0.8224}, "frame-oval": {"l": 15.1, "t": 12.9, "w": 69.1, "h": 74.4, "ar": 0.822}} };
+  return { scene, way, archScene, corner, divider, lace, vinyl, vine, penjor, fronds, backdrop, heroDeco };
 })();
