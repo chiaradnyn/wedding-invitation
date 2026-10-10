@@ -399,18 +399,27 @@
     applyChrome(); render(st, true); scrollTo({ top: y, behavior: "instant" });
   }
 
-  $("#deco").innerHTML = Art.backdrop();
-  $("#lang-open").append(langSwitch()); $("#lang-top").replaceWith(langSwitch());
-  applyChrome();
-  render(null, false);
-
-  const music = $("#music"); music.hidden = false; music.onclick = toggle;
+  // The seal is wired up first, so the invitation always opens even if a later step fails
   $("#seal").addEventListener("click", () => {
     $("#envelope").classList.add("opened"); $("#seal").disabled = true;
     if (audio) { play(); setTimeout(() => { if (audio.paused || audio.readyState < 3) toast(U.musicLoading); }, 3500); } // starts from a tap, so browsers allow it
     setTimeout(() => { $("#opening").classList.add("gone"); document.body.classList.remove("locked"); scrollTo(0, 0); }, reduced ? 200 : 1900);
     setTimeout(() => $("#opening").setAttribute("hidden", ""), reduced ? 700 : 2900);
   });
+  const music = $("#music"); music.hidden = false; music.onclick = toggle;
+
+  // js/art.js must be the matching version (artwork from assets/art/, no line-drawn janur)
+  if (!window.Art || Art.version !== 16) {
+    const b = h("div", { style: "position:fixed;z-index:999;left:0;right:0;top:0;padding:12px;font:14px sans-serif;color:#fff;background:#A4513F",
+      text: "js/art.js is an old version. Replace it with the art.js from this update." });
+    document.body.append(b);
+  }
+  const safe = (fn, label) => { try { fn(); } catch (e) { console.error(label, e); } };
+  safe(() => { $("#deco").innerHTML = Art.backdrop(); }, "backdrop");
+  safe(() => { $("#lang-open").append(langSwitch()); $("#lang-top").replaceWith(langSwitch()); }, "language switch");
+  safe(applyChrome, "envelope text");
+  safe(() => render(null, false), "page");
+
 
   if (!reduced) {
     const bg = $("[data-parallax]"); let tk = false;
